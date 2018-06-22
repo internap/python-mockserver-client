@@ -11,3 +11,6 @@ class MockServerClientTestCase(unittest.TestCase):
     def setUp(self):
         self.client = MockServerClient(MOCK_SERVER_URL)
         self.client.reset()
+
+    def tearDown(self):
+        self.client.reset()

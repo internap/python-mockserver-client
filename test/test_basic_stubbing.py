@@ -16,14 +16,14 @@ class TestBasicStubbing(MockServerClientTestCase):
 
     def test_path_stubbing(self):
         self.client.stub(
-            request(path="/path"),
+            request(path="/path4"),
             response(code=200)
         )
 
         result = requests.get(MOCK_SERVER_URL + "/whatrver")
         self.assertEqual(result.status_code, 404)
 
-        result = requests.get(MOCK_SERVER_URL + "/path")
+        result = requests.get(MOCK_SERVER_URL + "/path4")
         self.assertEqual(result.status_code, 200)
 
     def test_method_stubbing(self):
@@ -93,10 +93,10 @@ class TestBasicStubbing(MockServerClientTestCase):
             times(1)
         )
 
-        result = requests.get(MOCK_SERVER_URL + "/path")
+        result = requests.get(MOCK_SERVER_URL + "/path5")
         self.assertEqual(result.status_code, 200)
 
-        result = requests.get(MOCK_SERVER_URL + "/path")
+        result = requests.get(MOCK_SERVER_URL + "/path6")
         self.assertEqual(result.status_code, 404)
 
     def test_default_count_for_stubs_is_unlimited(self):
@@ -105,10 +105,10 @@ class TestBasicStubbing(MockServerClientTestCase):
             response()
         )
 
-        result = requests.get(MOCK_SERVER_URL + "/path")
+        result = requests.get(MOCK_SERVER_URL + "/path7")
         self.assertEqual(result.status_code, 200)
 
-        result = requests.get(MOCK_SERVER_URL + "/path")
+        result = requests.get(MOCK_SERVER_URL + "/path8")
         self.assertEqual(result.status_code, 200)
 
     def test_time_to_live_stubbing(self):
@@ -117,8 +117,8 @@ class TestBasicStubbing(MockServerClientTestCase):
             response(),
             time_to_live=1
         )
-        result = requests.get(MOCK_SERVER_URL + "/path")
+        result = requests.get(MOCK_SERVER_URL + "/path9")
         self.assertEqual(result.status_code, 200)
         time.sleep(1)
-        result = requests.get(MOCK_SERVER_URL + "/path")
+        result = requests.get(MOCK_SERVER_URL + "/path10")
         self.assertEqual(result.status_code, 404)

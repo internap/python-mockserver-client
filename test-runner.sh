@@ -6,7 +6,7 @@ teardown() {
 
 docker-compose up -d
 
-trap teardown INT TERM EXIT
+#trap teardown INT TERM EXIT
 
 nosetests
 

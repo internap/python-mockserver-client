@@ -21,10 +21,10 @@ class TestBasicExpectations(MockServerClientTestCase):
             times(1)
         )
 
-        result = requests.get(MOCK_SERVER_URL + "/path")
+        result = requests.get(MOCK_SERVER_URL + "/path1")
         self.assertEqual(result.status_code, 200)
 
-        result = requests.get(MOCK_SERVER_URL + "/path")
+        result = requests.get(MOCK_SERVER_URL + "/path2")
         self.assertEqual(result.status_code, 404)
 
     def test_expect_never(self):
@@ -53,5 +53,5 @@ class TestBasicExpectations(MockServerClientTestCase):
             times(1),
             seconds(10)
         )
-        result = requests.get(MOCK_SERVER_URL + "/path")
+        result = requests.get(MOCK_SERVER_URL + "/path3")
         self.assertEqual(result.status_code, 200)

@@ -12,10 +12,10 @@ class TestJsonExpectations(MockServerClientTestCase):
             times(1)
         )
 
-        result = requests.get(MOCK_SERVER_URL + "/path", json={"key": "value"})
+        result = requests.get(MOCK_SERVER_URL + "/path11", json={"key": "value"})
         self.assertEquals(result.status_code, 404)
 
-        result = requests.get(MOCK_SERVER_URL + "/path", json={"key": "value", "key1": "value2"})
+        result = requests.get(MOCK_SERVER_URL + "/path12", json={"key": "value", "key1": "value2"})
         self.assertEquals(result.status_code, 200)
 
     def test_expect_json_contains(self):
@@ -27,8 +27,8 @@ class TestJsonExpectations(MockServerClientTestCase):
             times(1)
         )
 
-        result = requests.get(MOCK_SERVER_URL + "/path", json={"key1": "value2"})
+        result = requests.get(MOCK_SERVER_URL + "/path13", json={"key1": "value2"})
         self.assertEquals(result.status_code, 404)
 
-        result = requests.get(MOCK_SERVER_URL + "/path", json={"key1": "value2", "key": "value"})
+        result = requests.get(MOCK_SERVER_URL + "/path14", json={"key1": "value2", "key": "value"})
         self.assertEquals(result.status_code, 200)
