@@ -11,3 +11,4 @@ class MockServerClientTestCase(unittest.TestCase):
     def setUp(self):
         self.client = MockServerClient(MOCK_SERVER_URL)
         self.client.reset()
+        assert not self.client.retrieve(type="RECORDED_EXPECTATIONS")
