@@ -8,8 +8,8 @@ class MockServerClient:
         self.base_url = base_url
         self.expectations = []
 
-    def _call(self, command, data=None):
-        return requests.put("{}/{}".format(self.base_url, command), data=data)
+    def _call(self, command, data=None, **kwargs):
+        return requests.put("{}/{}".format(self.base_url, command), data=data, **kwargs)
 
     def reset(self):
         self.expectations = []
@@ -37,6 +37,15 @@ class MockServerClient:
     def verify_expectations(self):
         for req, timing in self.expectations:
             self.verify(req, timing)
+
+    def retrieve(self, type="REQUESTS", request=None):
+        try:
+            return self._call("retrieve",
+                              data=request and json.dumps(request) or None,
+                              params={"type": type, "format": "json"}
+                              ).json()
+        except ValueError:
+            return {}
 
 
 def request(method=None, path=None, querystring=None, body=None, headers=None, cookies=None):
