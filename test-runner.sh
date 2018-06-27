@@ -9,7 +9,7 @@ docker-compose up -d
 trap teardown INT TERM EXIT
 
 show_failures() {
-    docker-compose logs mock-server
+    docker-compose logs --timestamps mock-server
     exit 1
 }
 
