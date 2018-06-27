@@ -1,3 +1,5 @@
+import logging
+
 import collections
 import json
 import requests
@@ -9,6 +11,7 @@ class MockServerClient:
         self.expectations = []
 
     def _call(self, command, data=None):
+        logging.debug("{}: body: {}".format(command.upper(), data))
         return requests.put("{}/{}".format(self.base_url, command), data=data)
 
     def reset(self):
