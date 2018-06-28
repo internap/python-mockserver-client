@@ -5,7 +5,7 @@ import json
 import requests
 
 
-class MockServerClient:
+class MockServerClient(object):
     def __init__(self, base_url):
         self.base_url = base_url
         self.expectations = []

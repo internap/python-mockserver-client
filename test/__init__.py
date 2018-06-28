@@ -21,11 +21,14 @@ class Timed(object):
         self.interval = self.end - self.start
         logging.info(self.msg + ' took %0.3f ms' % (self.interval*1000.0))
 
+
 class SlowMockServerClient(MockServerClient):
     def _call(self, command, data=None):
         #time.sleep(0.01)
         with Timed("Calling {}".format(command)):
-            return super(SlowMockServerClient, self)._call(command, data)
+            result = super(SlowMockServerClient, self)._call(command, data)
+            logging.info("call elapsed from request {}".format(result.elapsed))
+            return result
 
 
 class MockServerClientTestCase(unittest.TestCase):
