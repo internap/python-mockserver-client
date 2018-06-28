@@ -30,7 +30,7 @@ class SlowMockServerClient(MockServerClient):
 
 class MockServerClientTestCase(unittest.TestCase):
     def setUp(self):
-        self.client = MockServerClient(MOCK_SERVER_URL)
+        self.client = SlowMockServerClient(MOCK_SERVER_URL)
 
     def tearDown(self):
         self.client.reset()
