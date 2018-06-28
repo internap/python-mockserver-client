@@ -28,5 +28,5 @@ trap teardown INT TERM EXIT
 
 wait_until "curl -XPUT http://localhost:1080/reset"
 
-nosetests --verbose --detailed-errors --debug=DEBUG || show_failures
+nosetests --verbose --detailed-errors --debug=DEBUG --nocapture || show_failures
 
