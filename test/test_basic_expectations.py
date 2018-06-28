@@ -1,3 +1,5 @@
+import logging
+
 import requests
 from mockserver import request, response, times, seconds
 from test import MOCK_SERVER_URL, MockServerClientTestCase
@@ -22,9 +24,11 @@ class TestBasicExpectations(MockServerClientTestCase):
         )
 
         result = requests.get(MOCK_SERVER_URL + "/path")
+        logging.info("Elapsed {}".format(result.elapsed))
         self.assertEqual(result.status_code, 200)
 
         result = requests.get(MOCK_SERVER_URL + "/path")
+        logging.info("Elapsed {}".format(result.elapsed))
         self.assertEqual(result.status_code, 404)
 
     def test_expect_never(self):
@@ -54,4 +58,5 @@ class TestBasicExpectations(MockServerClientTestCase):
             seconds(10)
         )
         result = requests.get(MOCK_SERVER_URL + "/path")
+        logging.info("Elapsed {}".format(result.elapsed))
         self.assertEqual(result.status_code, 200)
