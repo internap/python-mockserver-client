@@ -1,6 +1,7 @@
 import logging
-import logging
 import sys
+
+import requests
 
 root = logging.getLogger()
 root.setLevel(logging.DEBUG)
@@ -30,12 +31,12 @@ class Timed(object):
     def __exit__(self, *args):
         self.end = time.time()
         self.interval = self.end - self.start
-        logging.info(self.msg + ' took %0.3f ms' % (self.interval*1000.0))
+        logging.info(self.msg + ' took %0.3f ms' % (self.interval * 1000.0))
 
 
 class SlowMockServerClient(MockServerClient):
     def _call(self, command, data=None):
-        #time.sleep(0.01)
+        # time.sleep(0.01)
         with Timed("Calling {}".format(command)):
             result = super(SlowMockServerClient, self)._call(command, data)
             logging.info("call elapsed from request {}".format(result.elapsed))
@@ -49,3 +50,8 @@ class MockServerClientTestCase(unittest.TestCase):
     def tearDown(self):
         time.sleep(0.1)
         self.client.reset()
+
+        time.sleep(0.1)
+        result = requests.put("{}/{}".format(self.client.base_url, "retrieve"), params={"type": "REQUESTS", "format": "json"})
+        logging.info("Retrieve {} : {}".format(result.elapsed, result.json()))
+
