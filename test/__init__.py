@@ -47,4 +47,5 @@ class MockServerClientTestCase(unittest.TestCase):
         self.client = SlowMockServerClient(MOCK_SERVER_URL)
 
     def tearDown(self):
+        time.sleep(0.1)
         self.client.reset()
