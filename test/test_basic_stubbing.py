@@ -122,6 +122,3 @@ class TestBasicStubbing(MockServerClientTestCase):
         time.sleep(1)
         result = requests.get(MOCK_SERVER_URL + "/path")
         self.assertEqual(result.status_code, 404)
-
-
-        self.reset()

@@ -1,3 +1,4 @@
+import logging
 import time
 import unittest
 
@@ -6,10 +7,25 @@ from mockserver import MockServerClient
 MOCK_SERVER_URL = "http://localhost:1080"
 
 
+class Timed(object):
+    def __init__(self, msg):
+        self.msg = msg
+
+    def __enter__(self):
+        logging.info('{} START'.format(self.msg))
+        self.start = time.time()
+        return self
+
+    def __exit__(self, *args):
+        self.end = time.time()
+        self.interval = self.end - self.start
+        logging.info(self.msg + ' took %0.3f ms' % (self.interval*1000.0))
+
 class SlowMockServerClient(MockServerClient):
     def _call(self, command, data=None):
         time.sleep(0.01)
-        return super()._call(command, data)
+        with Timed("Calling {}".format(command)):
+            return super()._call(command, data)
 
 
 class MockServerClientTestCase(unittest.TestCase):
@@ -17,5 +33,4 @@ class MockServerClientTestCase(unittest.TestCase):
         self.client = MockServerClient(MOCK_SERVER_URL)
 
     def tearDown(self):
-        time.sleep(1)
         self.client.reset()
