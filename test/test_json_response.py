@@ -1,3 +1,5 @@
+import logging
+
 import requests
 from mockserver import request, json_response
 from test import MOCK_SERVER_URL, MockServerClientTestCase
@@ -11,6 +13,7 @@ class TestJsonResponse(MockServerClientTestCase):
         )
 
         result = requests.get(MOCK_SERVER_URL)
+        logging.info("Elapsed {}".format(result.elapsed))
         self.assertEqual(result.status_code, 207)
         self.assertEqual(result.json(), {"pay": {"lo": "ad"}})
         self.assertEqual(result.headers["Content-Type"], "application/json")
@@ -22,5 +25,6 @@ class TestJsonResponse(MockServerClientTestCase):
         )
 
         result = requests.get(MOCK_SERVER_URL)
+        logging.info("Elapsed {}".format(result.elapsed))
         self.assertEqual(result.headers["i-like"], "i-like")
         self.assertEqual(result.headers["Content-Type"], "application/json")

@@ -1,3 +1,4 @@
+import logging
 import time
 import requests
 from mockserver import request, response, times
@@ -12,6 +13,7 @@ class TestBasicStubbing(MockServerClientTestCase):
         )
 
         result = requests.get(MOCK_SERVER_URL + "/whatever")
+        logging.info("Elapsed {}".format(result.elapsed))
         self.assertEqual(result.status_code, 200)
 
     def test_path_stubbing(self):
@@ -21,9 +23,11 @@ class TestBasicStubbing(MockServerClientTestCase):
         )
 
         result = requests.get(MOCK_SERVER_URL + "/whatrver")
+        logging.info("Elapsed {}".format(result.elapsed))
         self.assertEqual(result.status_code, 404)
 
         result = requests.get(MOCK_SERVER_URL + "/path")
+        logging.info("Elapsed {}".format(result.elapsed))
         self.assertEqual(result.status_code, 200)
 
     def test_method_stubbing(self):
@@ -33,9 +37,11 @@ class TestBasicStubbing(MockServerClientTestCase):
         )
 
         result = requests.get(MOCK_SERVER_URL)
+        logging.info("Elapsed {}".format(result.elapsed))
         self.assertEqual(result.status_code, 404)
 
         result = requests.post(MOCK_SERVER_URL)
+        logging.info("Elapsed {}".format(result.elapsed))
         self.assertEqual(result.status_code, 200)
 
     def test_querystring_stubbing(self):
@@ -45,9 +51,11 @@ class TestBasicStubbing(MockServerClientTestCase):
         )
 
         result = requests.get(MOCK_SERVER_URL + "/?e=f")
+        logging.info("Elapsed {}".format(result.elapsed))
         self.assertEqual(result.status_code, 404)
 
         result = requests.get(MOCK_SERVER_URL + "/?a=b&c[0]=d")
+        logging.info("Elapsed {}".format(result.elapsed))
         self.assertEqual(result.status_code, 200)
 
     def test_body_stubbing(self):
@@ -69,9 +77,11 @@ class TestBasicStubbing(MockServerClientTestCase):
         )
 
         result = requests.get(MOCK_SERVER_URL)
+        logging.info("Elapsed {}".format(result.elapsed))
         self.assertEqual(result.status_code, 404)
 
         result = requests.get(MOCK_SERVER_URL, headers={"i-am-special": "yeah you are"})
+        logging.info("Elapsed {}".format(result.elapsed))
         self.assertEqual(result.status_code, 200)
 
     def test_cookies_stubbing(self):
@@ -81,9 +91,11 @@ class TestBasicStubbing(MockServerClientTestCase):
         )
 
         result = requests.get(MOCK_SERVER_URL)
+        logging.info("Elapsed {}".format(result.elapsed))
         self.assertEqual(result.status_code, 404)
 
         result = requests.get(MOCK_SERVER_URL, cookies={"i-am-cookie": "sweet-cookie"})
+        logging.info("Elapsed {}".format(result.elapsed))
         self.assertEqual(result.status_code, 200)
 
     def test_count_stubbing(self):
@@ -94,9 +106,11 @@ class TestBasicStubbing(MockServerClientTestCase):
         )
 
         result = requests.get(MOCK_SERVER_URL + "/path")
+        logging.info("Elapsed {}".format(result.elapsed))
         self.assertEqual(result.status_code, 200)
 
         result = requests.get(MOCK_SERVER_URL + "/path")
+        logging.info("Elapsed {}".format(result.elapsed))
         self.assertEqual(result.status_code, 404)
 
     def test_default_count_for_stubs_is_unlimited(self):
@@ -106,9 +120,11 @@ class TestBasicStubbing(MockServerClientTestCase):
         )
 
         result = requests.get(MOCK_SERVER_URL + "/path")
+        logging.info("Elapsed {}".format(result.elapsed))
         self.assertEqual(result.status_code, 200)
 
         result = requests.get(MOCK_SERVER_URL + "/path")
+        logging.info("Elapsed {}".format(result.elapsed))
         self.assertEqual(result.status_code, 200)
 
     def test_time_to_live_stubbing(self):
@@ -118,7 +134,9 @@ class TestBasicStubbing(MockServerClientTestCase):
             time_to_live=1
         )
         result = requests.get(MOCK_SERVER_URL + "/path")
+        logging.info("Elapsed {}".format(result.elapsed))
         self.assertEqual(result.status_code, 200)
         time.sleep(1)
         result = requests.get(MOCK_SERVER_URL + "/path")
+        logging.info("Elapsed {}".format(result.elapsed))
         self.assertEqual(result.status_code, 404)

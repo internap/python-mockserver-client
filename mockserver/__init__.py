@@ -1,14 +1,17 @@
+import logging
+
 import collections
 import json
 import requests
 
 
-class MockServerClient:
+class MockServerClient(object):
     def __init__(self, base_url):
         self.base_url = base_url
         self.expectations = []
 
     def _call(self, command, data=None):
+        logging.debug("{}: body: {}".format(command.upper(), data))
         return requests.put("{}/{}".format(self.base_url, command), data=data)
 
     def reset(self):
@@ -27,13 +30,16 @@ class MockServerClient:
         self.stub(request, response, timing, time_to_live)
         self.expectations.append((request, timing))
 
-    def verify(self):
+    def verify(self, request, timing):
+        result = self._call("verify", json.dumps({
+            "httpRequest": request,
+            "times": timing.for_verification()
+        }))
+        assert result.status_code == 202, result.content.decode("UTF-8").replace("\n", "\r\n")
+
+    def verify_expectations(self):
         for req, timing in self.expectations:
-            result = self._call("verify", json.dumps({
-                "httpRequest": req,
-                "times": timing.for_verification()
-            }))
-            assert result.status_code == 202, result.content.decode('UTF-8').replace('\n', '\r\n')
+            self.verify(req, timing)
 
 
 def request(method=None, path=None, querystring=None, body=None, headers=None, cookies=None):

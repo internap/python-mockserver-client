@@ -1,3 +1,4 @@
+import logging
 import time
 
 import requests
@@ -13,6 +14,7 @@ class TestBasicResponses(MockServerClientTestCase):
         )
 
         result = requests.get(MOCK_SERVER_URL)
+        logging.info("Elapsed {}".format(result.elapsed))
         self.assertEqual(result.status_code, 418)
 
     def test_body_response(self):
@@ -22,6 +24,7 @@ class TestBasicResponses(MockServerClientTestCase):
         )
 
         result = requests.get(MOCK_SERVER_URL)
+        logging.info("Elapsed {}".format(result.elapsed))
         self.assertEqual(result.content.decode(), "hey there")
 
     def test_headers_response(self):
@@ -31,6 +34,7 @@ class TestBasicResponses(MockServerClientTestCase):
         )
 
         result = requests.get(MOCK_SERVER_URL)
+        logging.info("Elapsed {}".format(result.elapsed))
         self.assertEqual(result.headers["i-like"], "i-like")
 
     def test_cookies_response(self):
@@ -40,6 +44,7 @@ class TestBasicResponses(MockServerClientTestCase):
         )
 
         result = requests.get(MOCK_SERVER_URL)
+        logging.info("Elapsed {}".format(result.elapsed))
         self.assertEqual(result.cookies["i-am-cookie"], "sweet-cookie")
 
     def test_delay_response(self):
@@ -49,7 +54,8 @@ class TestBasicResponses(MockServerClientTestCase):
         )
 
         start = time.time()
-        requests.get(MOCK_SERVER_URL)
+        result = requests.get(MOCK_SERVER_URL)
+        logging.info("Elapsed {}".format(result.elapsed))
         elapsed = time.time() - start
         self.assertGreater(elapsed, 1)
 
@@ -60,6 +66,7 @@ class TestBasicResponses(MockServerClientTestCase):
         )
 
         start = time.time()
-        requests.get(MOCK_SERVER_URL)
+        result = requests.get(MOCK_SERVER_URL)
+        logging.info("Elapsed {}".format(result.elapsed))
         elapsed = time.time() - start
         self.assertGreater(elapsed, 0.5)
