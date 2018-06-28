@@ -53,5 +53,5 @@ class MockServerClientTestCase(unittest.TestCase):
 
         time.sleep(0.1)
         result = requests.put("{}/{}".format(self.client.base_url, "retrieve"), params={"type": "REQUESTS", "format": "json"})
-        logging.info("Retrieve {} : {}".format(result.elapsed, result.json()))
+        logging.info("Retrieve {} : {}".format(result.elapsed, result.content))
 
