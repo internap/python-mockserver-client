@@ -23,9 +23,9 @@ class Timed(object):
 
 class SlowMockServerClient(MockServerClient):
     def _call(self, command, data=None):
-        time.sleep(0.01)
+        #time.sleep(0.01)
         with Timed("Calling {}".format(command)):
-            return super()._call(command, data)
+            return super(SlowMockServerClient, self)._call(command, data)
 
 
 class MockServerClientTestCase(unittest.TestCase):
