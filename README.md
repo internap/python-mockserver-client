@@ -172,6 +172,18 @@ client.verify(
     times(1)
 )
 ```
+
+### Retrieving recorded requests
+
+```
+from mockserver import MockServerClient, request, times
+import requests
+
+client = MockServerClient("http://localhost:1080")
+requests.post("http://localhost:1080/whatever", json={"foo": "bar"})
+result = client.retrieve_recorded_requests(method='POST', path='/whatever')
+print(result.get('body')["string"])
+```
 Verify will check request on MockServer and raise AssertionError if request not found.
 
 ## More documentation
