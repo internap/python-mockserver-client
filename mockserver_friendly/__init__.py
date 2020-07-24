@@ -39,6 +39,17 @@ class MockServerFriendlyClient(object):
         for req, timing in self.expectations:
             self.verify(req, timing)
 
+    def retrieve_recorded_requests(
+            self,
+            path=None,
+            method=None,
+            querystring=None):
+        return self._call("retrieve", json.dumps(_non_null_options_to_dict(
+            _Option("method", method),
+            _Option("path", path),
+            _Option("queryStringParameters", querystring, formatter=_to_named_values_list),
+        ))).json()
+
 
 def request(method=None, path=None, querystring=None, body=None, headers=None, cookies=None):
     return _non_null_options_to_dict(
